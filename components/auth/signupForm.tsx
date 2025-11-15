@@ -29,9 +29,6 @@ export default function SignupForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
-    defaultValues: {
-      agreeToMarketing: false,
-    },
   });
 
   const onSubmit = async (data: SignupFormValues) => {
@@ -45,7 +42,7 @@ export default function SignupForm() {
         nickname: data.nickname,
         agreeToTerms: data.agreeToTerms,
         agreeToPrivacy: data.agreeToPrivacy,
-        agreeToMarketing: data.agreeToMarketing || false,
+        agreeToCommunity: data.agreeToCommunity,
       };
 
       const result = await authApi.signup(signupData);

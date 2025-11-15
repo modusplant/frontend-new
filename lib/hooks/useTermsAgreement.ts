@@ -11,6 +11,7 @@ export interface TermsAgreementState {
 export interface TermsContentState {
   showTermsContent: boolean;
   showPrivacyContent: boolean;
+  showCommunityContent: boolean;
   showMarketingContent: boolean;
 }
 
@@ -40,6 +41,7 @@ export const useTermsAgreement = ({
   const [contentState, setContentState] = useState<TermsContentState>({
     showTermsContent: false,
     showPrivacyContent: false,
+    showCommunityContent: false,
     showMarketingContent: false,
     ...initialContentState,
   });
@@ -107,6 +109,7 @@ export const useTermsAgreement = ({
     setContentState({
       showTermsContent: false,
       showPrivacyContent: false,
+      showCommunityContent: false,
       showMarketingContent: false,
     });
   }, []);

@@ -4,6 +4,7 @@ import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
 import { SignupFormValues } from "@/lib/validations/auth";
 import { useTermsAgreement } from "@/lib/hooks/useTermsAgreement";
 import { Checkbox } from "@/components/_common/checkbox";
+import { TERMS_MAP, TERMS_LABELS, REQUIRED_TERMS } from "@/lib/constants/terms";
 
 interface TermsSectionProps {
   register: UseFormRegister<SignupFormValues>;
@@ -24,20 +25,20 @@ export default function TermsSection({
   const agreementValues = {
     agreeToTerms: watch("agreeToTerms"),
     agreeToPrivacy: watch("agreeToPrivacy"),
-    agreeToMarketing: watch("agreeToMarketing"),
+    agreeToCommunity: watch("agreeToCommunity"),
   };
 
-  // 모든 약관 동의 상태
+  // 모든 필수 약관 동의 상태
   const allTermsAgreed =
     agreementValues.agreeToTerms &&
     agreementValues.agreeToPrivacy &&
-    agreementValues.agreeToMarketing;
+    agreementValues.agreeToCommunity;
 
   const handleAllAgreementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setValue("agreeToTerms", checked);
     setValue("agreeToPrivacy", checked);
-    setValue("agreeToMarketing", checked);
+    setValue("agreeToCommunity", checked);
   };
 
   return (
@@ -50,7 +51,7 @@ export default function TermsSection({
           id="agreeToAll"
         />
         <span className="text-neutral-20 text-sm font-semibold">
-          모든 약관 및 정책에 동의합니다.
+          {TERMS_LABELS.all}
         </span>
       </div>
 
@@ -69,7 +70,7 @@ export default function TermsSection({
                 checked={agreementValues.agreeToTerms || false}
               />
               <span className="text-neutral-60 text-sm">
-                [필수] 이용약관을 확인했으며, 동의합니다.
+                {TERMS_LABELS.terms}
               </span>
             </div>
             <button
@@ -82,17 +83,11 @@ export default function TermsSection({
           </div>
           {contentState.showTermsContent && (
             <div className="bg-neutral-98 text-neutral-60 ml-6 rounded-md p-3 text-sm leading-relaxed">
-              <p className="mb-2 font-medium">[필수] 서비스 이용약관 동의</p>
+              <p className="mb-2 font-medium">{TERMS_MAP.terms.title}</p>
               <ul className="space-y-1 text-xs md:text-sm">
-                <li>
-                  • 본 서비스는 회원 간 소통과 정보 공유를 위한 커뮤니티
-                  플랫폼입니다.
-                </li>
-                <li>
-                  • 타인의 권리를 침해하거나 불법·부적절한 게시물은 제재될 수
-                  있습니다.
-                </li>
-                <li>• 서비스 운영 정책 및 공지사항을 준수해야 합니다.</li>
+                {TERMS_MAP.terms.items.map((item, index) => (
+                  <li key={index}>• {item}</li>
+                ))}
               </ul>
             </div>
           )}
@@ -108,7 +103,7 @@ export default function TermsSection({
                 checked={agreementValues.agreeToPrivacy || false}
               />
               <span className="text-neutral-60 text-sm">
-                [필수] 개인정보 처리방침을 확인했으며, 동의합니다.
+                {TERMS_LABELS.privacy}
               </span>
             </div>
             <button
@@ -121,58 +116,44 @@ export default function TermsSection({
           </div>
           {contentState.showPrivacyContent && (
             <div className="bg-neutral-98 text-neutral-60 ml-6 rounded-md p-3 text-sm leading-relaxed">
-              <p className="mb-2 font-medium">
-                [필수] 개인정보 수집 및 이용 동의
-              </p>
+              <p className="mb-2 font-medium">{TERMS_MAP.privacy.title}</p>
               <ul className="space-y-1 text-xs md:text-sm">
-                <li>
-                  • 회원가입 및 서비스 이용을 위해 닉네임, 이메일 등 기본 정보를
-                  수집합니다.
-                </li>
-                <li>
-                  • 수집된 정보는 서비스 운영 및 고객 문의 응대에만 사용됩니다.
-                </li>
-                <li>• 개인정보는 회원 탈퇴 시 즉시 삭제됩니다.</li>
+                {TERMS_MAP.privacy.items.map((item, index) => (
+                  <li key={index}>• {item}</li>
+                ))}
               </ul>
             </div>
           )}
         </div>
 
-        {/* 마케팅 수신 동의 */}
+        {/* 커뮤니티 운영정책 */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Checkbox
-                {...register("agreeToMarketing")}
-                id="agreeToMarketing"
-                checked={agreementValues.agreeToMarketing || false}
+                {...register("agreeToCommunity")}
+                id="agreeToCommunity"
+                checked={agreementValues.agreeToCommunity || false}
               />
               <span className="text-neutral-60 text-sm">
-                [필수] 커뮤니티 운영정책 동의
+                {TERMS_LABELS.community}
               </span>
             </div>
             <button
               type="button"
-              onClick={() => toggleContent("showMarketingContent")}
+              onClick={() => toggleContent("showCommunityContent")}
               className="text-neutral-60 text-sm underline"
             >
-              {contentState.showMarketingContent ? "접기" : "보기"}
+              {contentState.showCommunityContent ? "접기" : "보기"}
             </button>
           </div>
-          {contentState.showMarketingContent && (
+          {contentState.showCommunityContent && (
             <div className="bg-neutral-98 text-neutral-60 ml-6 rounded-md p-3 text-sm leading-relaxed">
-              <p className="mb-2 font-medium">[필수] 커뮤니티 운영정책 동의</p>
+              <p className="mb-2 font-medium">{TERMS_MAP.community.title}</p>
               <ul className="space-y-1 text-xs md:text-sm">
-                <li>
-                  • 욕설, 비방, 혐오, 음란, 광고성 콘텐츠는 등록이 제한됩니다.
-                </li>
-                <li>
-                  • 타인의 명예를 훼손하거나 불쾌감을 주는 활동은 금지됩니다.
-                </li>
-                <li>
-                  • 위반 시 게시물 삭제 및 이용 제한 등의 조치가 이루어질 수
-                  있습니다.
-                </li>
+                {TERMS_MAP.community.items.map((item, index) => (
+                  <li key={index}>• {item}</li>
+                ))}
               </ul>
             </div>
           )}
@@ -180,7 +161,9 @@ export default function TermsSection({
       </div>
 
       {/* 에러 메시지 */}
-      {(errors.agreeToTerms || errors.agreeToPrivacy) && (
+      {(errors.agreeToTerms ||
+        errors.agreeToPrivacy ||
+        errors.agreeToCommunity) && (
         <p className="mt-2 text-sm text-red-500">필수 약관에 동의해주세요.</p>
       )}
     </div>

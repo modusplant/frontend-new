@@ -132,7 +132,7 @@ export async function signup(data: {
   nickname: string;
   agreeToTerms: boolean;
   agreeToPrivacy: boolean;
-  agreeToMarketing: boolean;
+  agreeToCommunity: boolean;
 }): Promise<SignupResponse> {
   const response = await apiCall<SignupResponse>("/api/auth/signup", {
     method: "POST",
@@ -246,7 +246,6 @@ export async function signupMock(data: {
   nickname: string;
   agreeToTerms: boolean;
   agreeToPrivacy: boolean;
-  agreeToMarketing: boolean;
 }): Promise<SignupResponse> {
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
