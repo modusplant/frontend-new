@@ -43,7 +43,9 @@ export const signupSchema = z
     agreeToPrivacy: z.boolean().refine((val) => val === true, {
       message: "개인정보처리방침에 동의해주세요",
     }),
-    agreeToMarketing: z.boolean().optional(),
+    agreeToCommunity: z.boolean().refine((val) => val === true, {
+      message: "커뮤니티 운영정책에 동의해주세요",
+    }),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 서로 일치하지 않습니다",

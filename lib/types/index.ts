@@ -116,7 +116,7 @@ export interface SignupFormData {
   nickname: string;
   agreeToTerms: boolean;
   agreeToPrivacy: boolean;
-  agreeToMarketing: boolean; // 선택 동의
+  agreeToCommunity: boolean;
 }
 
 /**
