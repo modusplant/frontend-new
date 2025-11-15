@@ -25,7 +25,7 @@ export default function Footer({ className }: FooterProps) {
             height={32}
           />
 
-          <span className="text-surface-stroke2">|</span>
+          <span className="text-surface-stroke-2">|</span>
 
           {/* 링크 섹션 1 */}
           <div className="text-neutral-40 flex gap-10">
@@ -46,7 +46,7 @@ export default function Footer({ className }: FooterProps) {
             </Link>
           </div>
 
-          <span className="text-surface-stroke2">|</span>
+          <span className="text-surface-stroke-2">|</span>
 
           {/* 하단 저작권 */}
           <div className="text-neutral-60 text-xs md:text-sm">

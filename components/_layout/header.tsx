@@ -1,14 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/_common/button";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export interface HeaderProps {
   className?: string;
-  isLoggedIn?: boolean; // 로그인 상태 (추후 실제 인증 로직으로 대체)
 }
 
-export default function Header({ className, isLoggedIn = false }: HeaderProps) {
+export default function Header({ className }: HeaderProps) {
+  const { isAuthenticated, user, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <header className={cn("sticky top-0 z-50 w-full", className)}>
       <div className="flex h-14 w-full items-center justify-between px-2 md:px-4 lg:px-6">
@@ -24,12 +31,13 @@ export default function Header({ className, isLoggedIn = false }: HeaderProps) {
 
         {/* 로그인 상태에 따른 버튼 */}
         <div className="flex items-center gap-2">
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <>
               {/* 프로필 아이콘 (추후 드롭다운 추가) */}
               <button
                 className="bg-primary-10 text-primary-50 hover:bg-primary-50 flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:text-neutral-100"
                 aria-label="프로필 메뉴"
+                title={user?.email || "사용자"}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -52,16 +60,37 @@ export default function Header({ className, isLoggedIn = false }: HeaderProps) {
                   글쓰기
                 </Button>
               </Link>
+              {/* 로그아웃 버튼 */}
+              <Button
+                variant="default"
+                size="sm"
+                className="rounded-full"
+                onClick={handleLogout}
+              >
+                로그아웃
+              </Button>
             </>
           ) : (
             <>
               {/* 로그인/회원가입 버튼 */}
-              <Button variant="default" size="sm" className="rounded-full">
-                로그인
-              </Button>
-              <Button variant="point" size="sm" className="rounded-full">
-                회원가입
-              </Button>
+              <Link href="/login">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="cursor-pointer rounded-full"
+                >
+                  로그인
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button
+                  variant="point"
+                  size="sm"
+                  className="cursor-pointer rounded-full"
+                >
+                  회원가입
+                </Button>
+              </Link>
             </>
           )}
         </div>
