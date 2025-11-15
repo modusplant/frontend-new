@@ -16,7 +16,7 @@ export default function Home() {
 
         {/* Post List Section */}
         <section className="w-full py-8 md:py-12 lg:py-16">
-          <div className="mx-auto flex w-full max-w-7xl flex-col px-4 md:px-6 lg:px-8">
+          <div className="mx-auto flex w-full max-w-[1320px] flex-col px-4 md:px-6 lg:px-8">
             {/* 섹션 타이틀 */}
             <div className="flex flex-col gap-2.5">
               <span className="font-emphasis text-primary-50 text-xl font-bold">

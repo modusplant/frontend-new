@@ -46,7 +46,7 @@ export default function PostList() {
   return (
     <section className="w-full">
       {/* 카테고리 필터 */}
-      <div className="my-10 flex gap-6">
+      <div className="my-10 flex gap-2.5">
         {/* 1차 카테고리 */}
         <div>
           <PrimaryCategoryFilter

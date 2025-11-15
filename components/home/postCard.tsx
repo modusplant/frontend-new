@@ -88,7 +88,7 @@ export default function PostCard({ post, className }: PostCardProps) {
 
         <div className="flex flex-col gap-1.5">
           {/* 제목 */}
-          <h3 className="text-neutral-0 group-hover:text-primary-50 line-clamp-1 text-lg font-semibold md:text-xl">
+          <h3 className="text-neutral-20 group-hover:text-primary-50 line-clamp-1 text-lg font-semibold md:text-[17px]">
             {post.title}
           </h3>
 
