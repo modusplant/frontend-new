@@ -180,7 +180,7 @@ export const safeString = (value: any): string => {
  * 디바운스된 검증을 위한 타이머 관리
  */
 export const createDebounceTimer = () => {
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let timeoutId: NodeJS.Timeout | number | null = null;
 
   const debounce = (func: Function, delay: number) => {
     if (timeoutId) {

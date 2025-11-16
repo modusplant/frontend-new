@@ -21,7 +21,7 @@ const loginSchema = z.object({
     .string()
     .min(1, "비밀번호를 입력해주세요")
     .min(8, "비밀번호는 8자 이상이어야 합니다"),
-  rememberMe: z.boolean().default(true),
+  rememberMe: z.boolean(),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;

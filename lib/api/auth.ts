@@ -158,12 +158,23 @@ export async function login(data: {
   };
   token?: string;
 }> {
-  const response = await apiCall("/api/auth/login", {
+  const response = await apiCall<{
+    user?: {
+      id: string;
+      email: string;
+      nickname: string;
+    };
+    token?: string;
+  }>("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(data),
   });
 
-  return response.data!;
+  return {
+    success: response.success,
+    user: response.data?.user,
+    token: response.data?.token,
+  };
 }
 
 // ===========================================
