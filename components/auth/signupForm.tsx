@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
-import { signupSchema, SignupFormValues } from "@/lib/validations/auth";
-import { isSignupFormValid } from "@/lib/utils/auth";
+import { signupSchema, SignupFormValues } from "@/lib/utils/auth";
 import { authApi } from "@/lib/api/auth";
 import { useAuthStore } from "@/lib/store/authStore";
+import { TERMS_VERSIONS } from "@/lib/constants/terms";
 import { Button } from "@/components/_common/button";
 
 // Sub-components
@@ -32,42 +32,47 @@ export default function SignupForm() {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
-    console.log("회원가입 데이터:", data);
-
     try {
-      // API 호출을 위한 데이터 변환
+      // 1. 회원가입 API 호출
       const signupData = {
         email: data.email,
         password: data.password,
         nickname: data.nickname,
-        agreeToTerms: data.agreeToTerms,
-        agreeToPrivacy: data.agreeToPrivacy,
-        agreeToCommunity: data.agreeToCommunity,
+        agreedTermsOfUseVersion: TERMS_VERSIONS.termsOfUse,
+        agreedPrivacyPolicyVersion: TERMS_VERSIONS.privacyPolicy,
+        agreedAdInfoReceivingVersion: data.agreeToCommunity
+          ? TERMS_VERSIONS.adInfoReceiving
+          : "",
       };
 
-      const result = await authApi.signup(signupData);
+      const signupResult = await authApi.signup(signupData);
 
-      if (result.success) {
-        console.log("회원가입 성공:", result);
-
-        // 자동 로그인 (User 타입에 맞게 수정)
-        login({
-          id: Date.now().toString(), // 임시 ID
+      if (signupResult.status === 200) {
+        // 2. 회원가입 성공 후 자동 로그인
+        const loginResult = await authApi.login({
           email: data.email,
+          password: data.password,
         });
 
-        alert("회원가입이 완료되었습니다!");
-        router.push("/");
-      } else {
-        alert("회원가입에 실패했습니다.");
+        if (loginResult.status === 200 && loginResult.user) {
+          // 3. JWT에서 추출한 사용자 정보로 로그인 처리
+          login(loginResult.user, true); // rememberMe: true로 자동 로그인 활성화
+
+          alert("회원가입이 완료되었습니다!");
+          router.push("/"); // 메인 페이지로 이동
+        } else {
+          // 로그인 실패 시 로그인 페이지로 이동
+          alert("회원가입은 완료되었습니다. 로그인해주세요.");
+          router.push("/login");
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("회원가입 오류:", error);
-      alert("회원가입 중 오류가 발생했습니다.");
+      alert(error.message || "회원가입 중 오류가 발생했습니다.");
     }
   };
 
-  // 폼 유효성 검사를 간소화된 방식으로 변경
+  // 폼 유효성 검사
   const formData = watch();
   const isFormValid =
     formData.agreeToTerms &&
@@ -85,7 +90,7 @@ export default function SignupForm() {
       />
 
       {/* 비밀번호 섹션 */}
-      <PasswordSection register={register} errors={errors} />
+      <PasswordSection register={register} errors={errors} watch={watch} />
 
       {/* 닉네임 섹션 */}
       <NicknameSection
