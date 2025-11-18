@@ -86,3 +86,49 @@ export interface UserAuthInfoResponseData {
   email: string;
   provider: string;
 }
+
+/**
+ * 게시글 콘텐츠 파트
+ */
+export interface PostContentPart {
+  type: "text" | "image" | "video" | "audio" | "file";
+  order: number;
+  filename: string;
+  data: string;
+}
+
+/**
+ * 게시글 목록 조회 요청 파라미터
+ */
+export interface GetPostsRequest {
+  lastPostId?: string; // 커서 기반 페이지네이션
+  size: number; // 페이지 크기
+  primaryCategoryId?: string; // UUID
+  secondaryCategoryId?: string; // UUID (쉼표로 구분하여 여러 개 가능)
+}
+
+/**
+ * 게시글 목록 응답 데이터 (개별 게시글)
+ */
+export interface PostData {
+  postId: string;
+  primaryCategory: string; // "일상", "Q&A", "팁"
+  secondaryCategory: string; // "관엽/야생화", "기타" 등
+  nickname: string;
+  title: string;
+  content: PostContentPart[]; // 첫 번째 텍스트와 이미지만
+  likeCount: number;
+  commentCount?: number; // API 응답에 없지만 클라이언트에서 사용
+  isBookmarked?: boolean; // API 응답에 없지만 클라이언트에서 사용
+  publishedAt: string; // ISO 8601 형식
+}
+
+/**
+ * 게시글 목록 조회 응답 데이터
+ */
+export interface GetPostsResponseData {
+  posts: PostData[];
+  nextPostId: string | null;
+  hasNext: boolean;
+  size: number;
+}
