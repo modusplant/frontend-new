@@ -23,8 +23,6 @@ export interface PostCardProps {
  * - 2차 카테고리, 본문 일부(말줄임표), 업로드 일자, 닉네임
  */
 export default function PostCard({ post, className }: PostCardProps) {
-  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
-
   // 날짜 포맷팅
   const formattedDate = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -115,10 +113,10 @@ export default function PostCard({ post, className }: PostCardProps) {
               <span>{post.commentCount}</span>
             </span>
             <Bookmark
-              fill={isBookmarked ? "currentColor" : "none"}
+              fill={post.isBookmarked ? "currentColor" : "none"}
               className={cn(
                 "md:h-5 md:w-5",
-                isBookmarked ? "text-primary-50" : "text-neutral-60"
+                post.isBookmarked ? "text-primary-50" : "text-neutral-60"
               )}
             />
           </div>
