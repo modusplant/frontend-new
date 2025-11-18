@@ -92,3 +92,12 @@ export const OPTIONAL_TERMS = ["marketing"] as const;
 export const ALL_TERMS = [...REQUIRED_TERMS, ...OPTIONAL_TERMS] as const;
 
 export type TermsType = (typeof ALL_TERMS)[number];
+
+/**
+ * 약관 버전
+ */
+export const TERMS_VERSIONS = {
+  termsOfUse: "v1.1.3",
+  privacyPolicy: "v1.1.3",
+  adInfoReceiving: "v2.0.7",
+} as const;

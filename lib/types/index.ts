@@ -1,3 +1,12 @@
+import {
+  UseFormRegister,
+  UseFormTrigger,
+  UseFormWatch,
+  FieldErrors,
+  UseFormSetValue,
+} from "react-hook-form";
+import { SignupFormValues } from "@/lib/utils/auth";
+
 /**
  * 1차 카테고리 타입
  */
@@ -94,18 +103,6 @@ export interface Comment {
 }
 
 /**
- * 사용자 타입
- */
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  bio?: string;
-  createdAt: Date;
-}
-
-/**
  * 회원가입 폼 데이터 타입
  */
 export interface SignupFormData {
@@ -175,4 +172,81 @@ export interface NicknameCheckResponse {
   success: boolean;
   available: boolean;
   message: string;
+}
+
+/**
+ * 인증된 사용자 정보 타입
+ */
+export interface User {
+  id: string;
+  email: string;
+  nickname: string;
+  roles: string;
+}
+
+/**
+ * 인증 상태 및 액션 타입 (Zustand 스토어용)
+ */
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loginAttempts: number;
+}
+
+/**
+ * 인증 액션 타입
+ */
+interface AuthActions {
+  initialize: () => Promise<void>;
+  login: (user: User, rememberMe: boolean) => void;
+  logout: () => void;
+  updateUser: (user: Partial<User>) => void;
+  incrementLoginAttempts: () => void;
+  resetLoginAttempts: () => void;
+}
+
+/** 인증 스토어 타입
+ */
+export type AuthStore = AuthState & AuthActions;
+
+/** 이메일 섹션 컴포넌트 props 타입
+ */
+export interface EmailSectionProps {
+  register: UseFormRegister<SignupFormValues>;
+  trigger: UseFormTrigger<SignupFormValues>;
+  watch: UseFormWatch<SignupFormValues>;
+  errors: {
+    email?: { message?: string };
+    verificationCode?: { message?: string };
+  };
+  className?: string;
+}
+
+/** 비밀번호 섹션 컴포넌트 props 타입
+ */
+export interface PasswordSectionProps {
+  register: UseFormRegister<SignupFormValues>;
+  watch: UseFormWatch<SignupFormValues>;
+  errors: Pick<FieldErrors<SignupFormValues>, "password" | "passwordConfirm">;
+  className?: string;
+}
+
+/** 닉네임 섹션 컴포넌트 props 타입
+ */
+export interface NicknameSectionProps {
+  register: UseFormRegister<SignupFormValues>;
+  trigger: UseFormTrigger<SignupFormValues>;
+  watch: UseFormWatch<SignupFormValues>;
+  errors: Pick<FieldErrors<SignupFormValues>, "nickname">;
+  className?: string;
+}
+
+/** 약관 동의 섹션 컴포넌트 props 타입
+ */
+
+export interface TermsSectionProps {
+  register: UseFormRegister<SignupFormValues>;
+  errors: FieldErrors<SignupFormValues>;
+  watch: (name: keyof SignupFormValues) => any;
+  setValue: UseFormSetValue<SignupFormValues>;
 }
