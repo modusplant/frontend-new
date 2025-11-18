@@ -3,28 +3,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/_common/input";
 import { Checkbox } from "@/components/_common/checkbox";
 import { Button } from "@/components/_common/button";
-import { useAuthStore, authAPI } from "@/lib/store/authStore";
-
-// 유효성 검사 스키마
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "이메일을 입력해주세요")
-    .email("올바른 이메일 형식이 아닙니다"),
-  password: z
-    .string()
-    .min(1, "비밀번호를 입력해주세요")
-    .min(8, "비밀번호는 8자 이상이어야 합니다"),
-  rememberMe: z.boolean(),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { useAuthStore } from "@/lib/store/authStore";
+import { authApi } from "@/lib/api/auth";
+import { loginSchema, LoginFormValues } from "@/lib/utils/auth";
 
 interface LoginFormProps {
   className?: string;
@@ -41,7 +27,7 @@ export default function LoginForm({ className }: LoginFormProps) {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<LoginFormData>({
+  } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -50,29 +36,50 @@ export default function LoginForm({ className }: LoginFormProps) {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormValues) => {
+    // 임시 로그인 데이터
+    // TODO: 추후 삭제
+    if (data.email === "test1234@naver.com" && data.password === "test1234") {
+      login(
+        {
+          id: "test@test.com",
+          email: "test@test.com",
+          nickname: "test_user",
+          roles: "ROLE_USER",
+        },
+        data.rememberMe || false
+      );
+      if (data.rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberMe");
+      }
+      router.push("/");
+      return;
+    }
+
     try {
       setIsLoading(true);
       setServerError(null);
 
       // API 호출
-      const response = await authAPI.login(data.email, data.password);
+      const response = await authApi.login({
+        email: data.email,
+        password: data.password,
+      });
 
-      // Zustand store 업데이트
-      login(response.user, data.rememberMe);
+      if (response.status === 200 && response.user) {
+        // 로그인 성공 - JWT에서 추출한 사용자 정보 저장
+        login(response.user, data.rememberMe || false);
 
-      // 로그인 성공 시 메인페이지로 리다이렉트
-      console.log("로그인 성공:", response.user);
-      router.push("/");
-    } catch (error) {
+        console.log("로그인 성공");
+        router.push("/");
+      }
+    } catch (error: any) {
       // 로그인 시도 횟수 증가
       incrementLoginAttempts();
 
-      if (error instanceof Error) {
-        setServerError(error.message);
-      } else {
-        setServerError("로그인 중 오류가 발생했습니다.");
-      }
+      setServerError(error.message || "로그인 중 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
