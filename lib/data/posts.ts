@@ -5,17 +5,30 @@ import {
   SecondaryCategoryDaily,
   SecondaryCategoryQnA,
 } from "@/lib/types";
+import { PostData } from "@/lib/types/api.type";
 
 /**
- * 더미 게시물 데이터
+ * 랜덤 썸네일 이미지 가져오기
  */
-export const dummyPosts: Post[] = [
+function getRandomThumbnail(): string {
+  const thumbnails = [
+    "/post/image_01.png",
+    "/post/image_02.png",
+    "/post/image_03.png",
+    "/post/image_04.png",
+  ];
+  return thumbnails[Math.floor(Math.random() * thumbnails.length)];
+}
+
+/**
+ * API 응답 구조에 맞춘 더미 게시물 데이터
+ */
+export const dummyPostsData: PostData[] = [
   {
-    id: "1",
-    primaryCategoryId: "148d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "264d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "daily",
-    secondaryCategory: "foliage-wildflower",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2RD",
+    primaryCategory: "일상",
+    secondaryCategory: "관엽/야생화",
+    nickname: "식물집사",
     title: "몬스테라 잎이 노랗게 변하는 이유와 해결 방법",
     content: [
       {
@@ -25,26 +38,16 @@ export const dummyPosts: Post[] = [
         data: "몬스테라를 키우다보면 잎이 노랗게 변하는 경우가 있습니다. 주요 원인은 과습, 영양 부족, 빛 부족 등이 있는데요...",
       },
     ],
-    excerpt:
-      "몬스테라 잎이 노랗게 변하는 주요 원인과 해결 방법을 알아봅니다.몬스테라 잎이 노랗게 변하는 주요 원인과 해결 방법을 알아봅니다.몬스테라 잎이 노랗게 변하는 주요 원인과 해결 방법을 알아봅니다.",
-    author: {
-      id: "user1",
-      nickname: "식물집사",
-      avatar: "/images/avatar1.jpg",
-    },
-    thumbnail: "/post/image_01.png",
-    createdAt: new Date("2024-11-08"),
-    likes: 32,
+    likeCount: 32,
     commentCount: 8,
     isBookmarked: false,
-    isPublished: true,
+    publishedAt: "2024-11-08T10:30:00",
   },
   {
-    id: "2",
-    primaryCategoryId: "148d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "364d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "daily",
-    secondaryCategory: "succulent-cactus",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2RC",
+    primaryCategory: "일상",
+    secondaryCategory: "다육/선인장",
+    nickname: "다육러버",
     title: "다육이 번식 성공 후기 - 엽삽 방법",
     content: [
       {
@@ -53,26 +56,23 @@ export const dummyPosts: Post[] = [
         filename: "text_0.txt",
         data: "다육이를 엽삽으로 번식시키는 방법을 공유합니다. 준비물과 과정을 자세히 설명드릴게요.",
       },
+      {
+        type: "image",
+        order: 2,
+        filename: "image_0.jpg",
+        data: "/post/image_02.png",
+      },
     ],
-    excerpt: "다육이 엽삽으로 성공적으로 번식시킨 경험을 공유합니다.",
-    author: {
-      id: "user2",
-      nickname: "다육러버",
-      avatar: "/images/avatar2.jpg",
-    },
-    thumbnail: "/post/image_02.png",
-    createdAt: new Date("2024-11-07"),
-    likes: 45,
+    likeCount: 45,
     commentCount: 12,
     isBookmarked: true,
-    isPublished: true,
+    publishedAt: "2024-11-07T14:20:00",
   },
   {
-    id: "3",
-    primaryCategoryId: "148d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "464d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "daily",
-    secondaryCategory: "veranda-garden",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2RB",
+    primaryCategory: "일상",
+    secondaryCategory: "베란다/정원",
+    nickname: "그린홀릭",
     title: "우리집 식물들 소개합니다 🌿",
     content: [
       {
@@ -81,26 +81,23 @@ export const dummyPosts: Post[] = [
         filename: "text_0.txt",
         data: "오랜만에 우리집 식물들을 소개해요. 현재 20종류 정도 키우고 있는데, 각자의 특징과 관리 방법을 공유합니다.",
       },
+      {
+        type: "image",
+        order: 2,
+        filename: "image_0.jpg",
+        data: "/post/image_03.png",
+      },
     ],
-    excerpt: "20여 종의 식물을 키우며 얻은 노하우를 공유합니다.",
-    author: {
-      id: "user3",
-      nickname: "그린홀릭",
-      avatar: "/images/avatar3.jpg",
-    },
-    thumbnail: "/post/image_03.png",
-    createdAt: new Date("2024-11-06"),
-    likes: 67,
+    likeCount: 67,
     commentCount: 23,
     isBookmarked: false,
-    isPublished: true,
+    publishedAt: "2024-11-06T09:15:00",
   },
   {
-    id: "4",
-    primaryCategoryId: "248d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "564d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "qna",
-    secondaryCategory: "leaf-growth-pest",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2RA",
+    primaryCategory: "Q&A",
+    secondaryCategory: "잎상태 / 성장 / 병충해",
+    nickname: "식물초보",
     title: "산세베리아 잎 끝이 갈색으로 변했어요",
     content: [
       {
@@ -109,26 +106,23 @@ export const dummyPosts: Post[] = [
         filename: "text_0.txt",
         data: "산세베리아를 키운지 3개월 정도 됐는데, 최근 잎 끝이 갈색으로 변하기 시작했습니다. 무엇이 문제일까요?",
       },
+      {
+        type: "image",
+        order: 2,
+        filename: "image_0.jpg",
+        data: "/post/image_04.png",
+      },
     ],
-    excerpt: "산세베리아 잎 끝 갈변 증상에 대한 질문입니다.",
-    author: {
-      id: "user4",
-      nickname: "식물초보",
-      avatar: "/images/avatar4.jpg",
-    },
-    thumbnail: "/post/image_04.png",
-    createdAt: new Date("2024-11-05"),
-    likes: 18,
+    likeCount: 18,
     commentCount: 15,
     isBookmarked: false,
-    isPublished: true,
+    publishedAt: "2024-11-05T16:45:00",
   },
   {
-    id: "5",
-    primaryCategoryId: "248d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "664d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "qna",
-    secondaryCategory: "watering-soil",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R9",
+    primaryCategory: "Q&A",
+    secondaryCategory: "물주기 / 흙",
+    nickname: "식물집사",
     title: "겨울철 물주기 주기는 얼마나 해야 하나요?",
     content: [
       {
@@ -138,25 +132,16 @@ export const dummyPosts: Post[] = [
         data: "겨울이 다가오면서 물주기 주기를 어떻게 조절해야 할지 모르겠어요. 조언 부탁드립니다.",
       },
     ],
-    excerpt: "겨울철 식물 물주기 주기에 대한 질문입니다.",
-    author: {
-      id: "user1",
-      nickname: "식물집사",
-      avatar: "/images/avatar1.jpg",
-    },
-    thumbnail: "/post/image_01.png",
-    createdAt: new Date("2024-11-04"),
-    likes: 89,
+    likeCount: 89,
     commentCount: 34,
     isBookmarked: true,
-    isPublished: true,
+    publishedAt: "2024-11-04T11:00:00",
   },
   {
-    id: "6",
-    primaryCategoryId: "348d6e33-102d-4df4-a4d0-5ff233665548",
-    secondaryCategoryId: "764d6e33-102d-4df4-a4d0-5ff233665548",
-    primaryCategory: "tip",
-    secondaryCategory: "all",
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
     title: "스킨답서스 물꽂이로 키우기",
     content: [
       {
@@ -166,20 +151,241 @@ export const dummyPosts: Post[] = [
         data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
       },
     ],
-    excerpt: "스킨답서스 물꽂이 방법과 주의사항을 알아봅니다.",
-    author: {
-      id: "user5",
-      nickname: "물꽂이마스터",
-      avatar: "/images/avatar5.jpg",
-    },
-    thumbnail: "/post/image_02.png",
-    createdAt: new Date("2024-11-03"),
-    likes: 56,
+    likeCount: 56,
     commentCount: 19,
     isBookmarked: false,
-    isPublished: true,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
+  },
+  {
+    postId: "01JY3PPG5YJ41H7BPD0DSQW2R8",
+    primaryCategory: "팁",
+    secondaryCategory: "전체",
+    nickname: "물꽂이마스터",
+    title: "스킨답서스 물꽂이로 키우기",
+    content: [
+      {
+        type: "text",
+        order: 1,
+        filename: "text_0.txt",
+        data: "스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!스킨답서스를 물꽂이로 키우는 방법을 소개합니다. 흙보다 관리가 쉽고 인테리어 효과도 좋아요!",
+      },
+    ],
+    likeCount: 56,
+    commentCount: 19,
+    isBookmarked: false,
+    publishedAt: "2024-11-03T13:30:00",
   },
 ];
+
+/**
+ * PostData를 Post 타입으로 변환 (UI 컴포넌트용)
+ */
+export function convertPostDataToPost(postData: PostData): Post {
+  // 썸네일: content에 image 타입이 있으면 사용, 없으면 랜덤
+  const imageContent = postData.content.find((c) => c.type === "image");
+  const thumbnail = imageContent ? imageContent.data : getRandomThumbnail();
+
+  // 본문 요약 (첫 번째 텍스트에서 추출)
+  const textContent = postData.content.find((c) => c.type === "text");
+  const excerpt = textContent ? textContent.data : "";
+
+  // primaryCategory 매핑
+  const primaryCategoryMap: Record<string, PrimaryCategory> = {
+    일상: "daily",
+    "Q&A": "qna",
+    팁: "tip",
+  };
+
+  // secondaryCategory 매핑 (간단히 문자열 그대로 사용, 필요시 매핑 추가)
+  const secondaryCategoryMap: Record<string, SecondaryCategory> = {
+    "관엽/야생화": "foliage-wildflower",
+    "다육/선인장": "succulent-cactus",
+    "베란다/정원": "veranda-garden",
+    "잎상태 / 성장 / 병충해": "leaf-growth-pest",
+    "물주기 / 흙": "watering-soil",
+    전체: "all",
+    기타: "etc",
+  };
+
+  return {
+    id: postData.postId,
+    primaryCategoryId: "", // 더미 데이터에서는 빈 문자열
+    secondaryCategoryId: "",
+    primaryCategory: primaryCategoryMap[postData.primaryCategory] || "daily",
+    secondaryCategory:
+      secondaryCategoryMap[postData.secondaryCategory] || "etc",
+    title: postData.title,
+    content: postData.content,
+    excerpt,
+    author: {
+      id: "",
+      nickname: postData.nickname,
+    },
+    thumbnail,
+    createdAt: new Date(postData.publishedAt),
+    likes: postData.likeCount,
+    commentCount: postData.commentCount || 0,
+    isBookmarked: postData.isBookmarked || false,
+    isPublished: true,
+  };
+}
+
+/**
+ * 더미 게시물 데이터 (Post 타입, UI 컴포넌트용)
+ */
+export const dummyPosts: Post[] = dummyPostsData.map(convertPostDataToPost);
 
 /**
  * 1차 카테고리별 라벨
