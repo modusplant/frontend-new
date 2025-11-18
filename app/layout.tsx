@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nanum_Myeongjo } from "next/font/google";
 import localFont from "next/font/local";
+import AuthInitializer from "@/components/auth/authInitializer";
 import "./globals.css";
 
 // Emphasis 폰트: Nanum Myeongjo (제목, 강조)
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} ${nanumMyeongjo.variable} antialiased`}
       >
+        <AuthInitializer />
         {children}
       </body>
     </html>

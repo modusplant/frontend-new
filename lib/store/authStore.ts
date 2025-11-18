@@ -1,117 +1,105 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-// 인증 상태 타입 정의
-export interface User {
-  id: string;
-  email: string;
-  name?: string;
-}
-
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  loginAttempts: number;
-  lastLoginAttempt: number | null;
-}
-
-interface AuthActions {
-  login: (user: User, rememberMe?: boolean) => void;
-  logout: () => void;
-  incrementLoginAttempts: () => void;
-  resetLoginAttempts: () => void;
-  isLoginBlocked: () => boolean;
-}
-
-export type AuthStore = AuthState & AuthActions;
+import { removeAccessToken, refreshAccessToken } from "@/lib/api/client";
+import { User, AuthStore } from "@/lib/types/index";
+import { decodeJWT } from "@/lib/utils/auth";
+import { authApi } from "@/lib/api/auth";
 
 // Zustand store 생성
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set, get) => ({
-      // 초기 상태
+export const useAuthStore = create<AuthStore>()((set) => ({
+  // 초기 상태
+  user: null,
+  isAuthenticated: false,
+  loginAttempts: 0,
+
+  // 초기화 함수 (앱 시작 시 자동 로그인 체크)
+  initialize: async () => {
+    // 서버 환경에서는 실행하지 않음
+    if (typeof window === "undefined") return;
+
+    const rememberMe = localStorage.getItem("rememberMe") === "true";
+
+    // rememberMe가 false이면 종료
+    if (!rememberMe) {
+      return;
+    }
+
+    // RefreshToken(httpOnly 쿠키)으로 새 AccessToken 발급 시도
+    try {
+      const newAccessToken = await refreshAccessToken();
+
+      // 새 토큰에서 사용자 정보 추출
+      const decoded = decodeJWT(newAccessToken);
+      if (decoded) {
+        // 사용자 이메일 조회
+        const authInfoResponse = await authApi.getCurrentUser(decoded.sub);
+        const email = authInfoResponse.data?.email || "";
+
+        set({
+          user: {
+            id: decoded.sub,
+            email: email,
+            nickname: decoded.nickname,
+            roles: decoded.roles,
+          },
+          isAuthenticated: true,
+        });
+      }
+    } catch (error) {
+      // RefreshToken도 만료되었거나 없는 경우 자동 로그인 정보 제거
+      console.error("자동 로그인 실패:", error);
+      localStorage.removeItem("rememberMe");
+      removeAccessToken();
+    }
+  },
+
+  // 액션들
+  login: (user: User, rememberMe: boolean) => {
+    set({
+      user,
+      isAuthenticated: true,
+      loginAttempts: 0, // 로그인 성공 시 시도 횟수 초기화
+    });
+
+    // 자동 로그인 설정
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", "true");
+    } else {
+      localStorage.removeItem("rememberMe");
+    }
+  },
+
+  logout: () => {
+    // 토큰 제거
+    removeAccessToken();
+
+    // 서버에 로그아웃 요청 (비동기, 에러 무시)
+    authApi.logout().catch(console.error);
+
+    set({
       user: null,
       isAuthenticated: false,
       loginAttempts: 0,
-      lastLoginAttempt: null,
+    });
 
-      // 액션들
-      login: (user: User, rememberMe = false) => {
-        set({
-          user,
-          isAuthenticated: true,
-          loginAttempts: 0, // 성공 시 시도 횟수 초기화
-          lastLoginAttempt: null,
-        });
-      },
-
-      logout: () => {
-        set({
-          user: null,
-          isAuthenticated: false,
-          loginAttempts: 0,
-          lastLoginAttempt: null,
-        });
-      },
-
-      incrementLoginAttempts: () => {
-        set((state) => ({
-          loginAttempts: state.loginAttempts + 1,
-          lastLoginAttempt: Date.now(),
-        }));
-      },
-
-      resetLoginAttempts: () => {
-        set({
-          loginAttempts: 0,
-          lastLoginAttempt: null,
-        });
-      },
-
-      isLoginBlocked: () => {
-        const state = get();
-        // 현재는 차단 로직 없음 (시간 제한 없음)
-        // 필요시 여기에 시간 기반 차단 로직 추가
-        return false;
-      },
-    }),
-    {
-      name: "auth-storage", // localStorage 키
-      partialize: (state) => ({
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
-        // 로그인 시도 관련은 세션에서만 유지하고 persist하지 않음
-      }),
-    }
-  )
-);
-
-// 더미 API 함수들 (실제 API 구현 시 대체)
-export const authAPI = {
-  login: async (email: string, password: string): Promise<{ user: User }> => {
-    // 인위적인 지연 (실제 API 호출 시뮬레이션)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // 더미 유저 검증
-    if (email === "notfound@example.com") {
-      throw new Error("존재하지 않는 이메일입니다.");
-    }
-
-    if (password !== "password123") {
-      throw new Error("비밀번호가 올바르지 않습니다.");
-    }
-
-    // 성공 시 더미 유저 반환
-    return {
-      user: {
-        id: "1",
-        email,
-        name: "테스트 사용자",
-      },
-    };
+    // 자동 로그인 정보 제거
+    localStorage.removeItem("rememberMe");
   },
 
-  logout: async (): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  updateUser: (userData: Partial<User>) => {
+    set((state) => ({
+      user: state.user ? { ...state.user, ...userData } : null,
+    }));
   },
-};
+
+  incrementLoginAttempts: () => {
+    set((state) => ({
+      loginAttempts: state.loginAttempts + 1,
+    }));
+  },
+
+  resetLoginAttempts: () => {
+    set({
+      loginAttempts: 0,
+    });
+  },
+}));
