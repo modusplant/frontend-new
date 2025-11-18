@@ -61,6 +61,7 @@ export default function Header({ className }: HeaderProps) {
                 </Button>
               </Link>
               {/* 로그아웃 버튼 */}
+              {/* TODO: 추후 삭제 */}
               <Button
                 variant="default"
                 size="sm"
