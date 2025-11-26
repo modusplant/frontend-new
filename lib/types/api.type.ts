@@ -118,9 +118,10 @@ export interface PostData {
   title: string;
   content: PostContentPart[]; // 첫 번째 텍스트와 이미지만
   likeCount: number;
-  commentCount?: number; // API 응답에 없지만 클라이언트에서 사용
-  isBookmarked?: boolean; // API 응답에 없지만 클라이언트에서 사용
   publishedAt: string; // ISO 8601 형식
+  commentCount: number;
+  isLiked: boolean;
+  isBookmarked: boolean;
 }
 
 /**
