@@ -42,6 +42,7 @@ export default function LoginForm({ className }: LoginFormProps) {
     if (data.email === "test1234@naver.com" && data.password === "test1234") {
       login(
         {
+          uuid: "test-uuid-123",
           id: "test@test.com",
           email: "test@test.com",
           nickname: "test_user",

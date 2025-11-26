@@ -6,6 +6,7 @@ import { Comment } from "@/lib/types";
 import { buildCommentTree } from "@/lib/utils/parseComments";
 import CommentList from "./commentList";
 import CommentForm from "./commentForm";
+import { dummyComments } from "@/lib/data/postDetail";
 
 interface CommentSectionProps {
   postId: string;
@@ -24,6 +25,8 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       }
     } catch (error) {
       console.error("댓글 조회 실패:", error);
+      const response = { data: dummyComments };
+      setComments(response.data);
     } finally {
       setIsLoading(false);
     }
