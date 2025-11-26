@@ -1,29 +1,10 @@
-import {
-  Post,
-  PrimaryCategory,
-  SecondaryCategory,
-  SecondaryCategoryDaily,
-  SecondaryCategoryQnA,
-} from "@/lib/types";
 import { PostData } from "@/lib/types/api.type";
 
 /**
- * 랜덤 썸네일 이미지 가져오기
+ * 더미 게시물 데이터 (API 응답 구조에 맞춤)
+ * - 실제 API 연동 시 GetPostsResponseData의 posts 배열로 대체
  */
-function getRandomThumbnail(): string {
-  const thumbnails = [
-    "/post/image_01.png",
-    "/post/image_02.png",
-    "/post/image_03.png",
-    "/post/image_04.png",
-  ];
-  return thumbnails[Math.floor(Math.random() * thumbnails.length)];
-}
-
-/**
- * API 응답 구조에 맞춘 더미 게시물 데이터
- */
-export const dummyPostsData: PostData[] = [
+export const dummyPosts: PostData[] = [
   {
     postId: "01JY3PPG5YJ41H7BPD0DSQW2RD",
     primaryCategory: "일상",
@@ -35,11 +16,12 @@ export const dummyPostsData: PostData[] = [
         type: "text",
         order: 1,
         filename: "text_0.txt",
-        data: "몬스테라를 키우다보면 잎이 노랗게 변하는 경우가 있습니다. 주요 원인은 과습, 영양 부족, 빛 부족 등이 있는데요...",
+        data: "몬스테라를 키우다보면 몬스테라를 키우다보면 몬스테라를 키우다보면 잎이 노랗게 변하는 경우가 있습니다. 주요 원인은 과습, 영양 부족, 빛 부족 등이 있는데요",
       },
     ],
     likeCount: 32,
     commentCount: 8,
+    isLiked: true,
     isBookmarked: false,
     publishedAt: "2024-11-08T10:30:00",
   },
@@ -65,6 +47,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 45,
     commentCount: 12,
+    isLiked: false,
     isBookmarked: true,
     publishedAt: "2024-11-07T14:20:00",
   },
@@ -90,6 +73,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 67,
     commentCount: 23,
+    isLiked: true,
     isBookmarked: false,
     publishedAt: "2024-11-06T09:15:00",
   },
@@ -115,6 +99,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 18,
     commentCount: 15,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-05T16:45:00",
   },
@@ -134,6 +119,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 89,
     commentCount: 34,
+    isLiked: false,
     isBookmarked: true,
     publishedAt: "2024-11-04T11:00:00",
   },
@@ -153,6 +139,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -161,7 +148,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 2",
     content: [
       {
         type: "text",
@@ -172,6 +159,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -180,7 +168,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 3",
     content: [
       {
         type: "text",
@@ -191,6 +179,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -199,7 +188,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 4",
     content: [
       {
         type: "text",
@@ -210,6 +199,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -218,7 +208,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 5",
     content: [
       {
         type: "text",
@@ -229,6 +219,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -237,7 +228,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 6",
     content: [
       {
         type: "text",
@@ -248,6 +239,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -256,7 +248,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 7",
     content: [
       {
         type: "text",
@@ -267,6 +259,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -275,7 +268,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 8",
     content: [
       {
         type: "text",
@@ -286,6 +279,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -294,7 +288,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 9",
     content: [
       {
         type: "text",
@@ -305,6 +299,7 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
@@ -313,7 +308,7 @@ export const dummyPostsData: PostData[] = [
     primaryCategory: "팁",
     secondaryCategory: "전체",
     nickname: "물꽂이마스터",
-    title: "스킨답서스 물꽂이로 키우기",
+    title: "스킨답서스 물꽂이로 키우기 10",
     content: [
       {
         type: "text",
@@ -324,118 +319,8 @@ export const dummyPostsData: PostData[] = [
     ],
     likeCount: 56,
     commentCount: 19,
+    isLiked: false,
     isBookmarked: false,
     publishedAt: "2024-11-03T13:30:00",
   },
 ];
-
-/**
- * PostData를 Post 타입으로 변환 (UI 컴포넌트용)
- */
-export function convertPostDataToPost(postData: PostData): Post {
-  // 썸네일: content에 image 타입이 있으면 사용, 없으면 랜덤
-  const imageContent = postData.content.find((c) => c.type === "image");
-  const thumbnail = imageContent ? imageContent.data : getRandomThumbnail();
-
-  // 본문 요약 (첫 번째 텍스트에서 추출)
-  const textContent = postData.content.find((c) => c.type === "text");
-  const excerpt = textContent ? textContent.data : "";
-
-  // primaryCategory 매핑
-  const primaryCategoryMap: Record<string, PrimaryCategory> = {
-    일상: "daily",
-    "Q&A": "qna",
-    팁: "tip",
-  };
-
-  // secondaryCategory 매핑 (간단히 문자열 그대로 사용, 필요시 매핑 추가)
-  const secondaryCategoryMap: Record<string, SecondaryCategory> = {
-    "관엽/야생화": "foliage-wildflower",
-    "다육/선인장": "succulent-cactus",
-    "베란다/정원": "veranda-garden",
-    "잎상태 / 성장 / 병충해": "leaf-growth-pest",
-    "물주기 / 흙": "watering-soil",
-    전체: "all",
-    기타: "etc",
-  };
-
-  return {
-    id: postData.postId,
-    primaryCategoryId: "", // 더미 데이터에서는 빈 문자열
-    secondaryCategoryId: "",
-    primaryCategory: primaryCategoryMap[postData.primaryCategory] || "daily",
-    secondaryCategory:
-      secondaryCategoryMap[postData.secondaryCategory] || "etc",
-    title: postData.title,
-    content: postData.content,
-    excerpt,
-    author: {
-      id: "",
-      nickname: postData.nickname,
-    },
-    thumbnail,
-    createdAt: new Date(postData.publishedAt),
-    likes: postData.likeCount,
-    commentCount: postData.commentCount || 0,
-    isBookmarked: postData.isBookmarked || false,
-    isPublished: true,
-  };
-}
-
-/**
- * 더미 게시물 데이터 (Post 타입, UI 컴포넌트용)
- */
-export const dummyPosts: Post[] = dummyPostsData.map(convertPostDataToPost);
-
-/**
- * 1차 카테고리별 라벨
- */
-export const primaryCategoryLabels: Record<PrimaryCategory, string> = {
-  all: "전체",
-  daily: "일상",
-  qna: "Q&A",
-  tip: "팁",
-};
-
-/**
- * 2차 카테고리별 라벨 (일상)
- */
-export const secondaryCategoryLabelsDaily: Record<
-  SecondaryCategoryDaily,
-  string
-> = {
-  all: "전체",
-  "foliage-wildflower": "관엽/야생화",
-  geranium: "제라늄",
-  begonia: "베고니아",
-  "succulent-cactus": "다육/선인장",
-  "carnivorous-vine-bulb": "식충/덩굴/구근",
-  "fern-moss-aquatic": "고사리/이끼/수생",
-  "veranda-garden": "베란다/정원",
-  "farm-vegetable": "농사/텃밭",
-  "plant-shopping": "식물 쇼핑",
-  etc: "기타",
-};
-
-/**
- * 2차 카테고리별 라벨 (Q&A)
- */
-export const secondaryCategoryLabelsQnA: Record<SecondaryCategoryQnA, string> =
-  {
-    all: "전체",
-    "watering-soil": "물주기 / 흙",
-    "leaf-growth-pest": "잎상태 / 성장 / 병충해",
-    "water-leaf-cutting": "물꽂이 / 잎꽂이",
-    "cutting-division": "삽목 / 포기 나누기",
-    "repotting-pruning": "분갈이 / 가지치기",
-    "overwintering-seed": "월동 / 씨앗",
-    "plant-recommend": "식물 추천 / 품종",
-    etc: "기타",
-  };
-
-/**
- * 2차 카테고리별 라벨 (팁)
- */
-export const secondaryCategoryLabelsTip = {
-  all: "전체",
-};
