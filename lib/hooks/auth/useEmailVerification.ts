@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { EmailVerificationState } from "@/lib/types";
+import { EmailVerificationState } from "@/lib/types/auth";
 
 export interface UseEmailVerificationProps {
   /** 인증 요청 API 함수 (실제 구현 시 사용) */
@@ -120,10 +120,13 @@ export const useEmailVerification = ({
   const verifyCode = useCallback(
     async (email: string, code: string) => {
       // 시간 만료 체크
-      if (verificationState.isCodeSent && verificationState.timeRemaining === 0) {
-        return { 
-          success: false, 
-          message: "인증 시간이 만료되었습니다. 인증코드를 재발송해주세요." 
+      if (
+        verificationState.isCodeSent &&
+        verificationState.timeRemaining === 0
+      ) {
+        return {
+          success: false,
+          message: "인증 시간이 만료되었습니다. 인증코드를 재발송해주세요.",
         };
       }
 
@@ -151,7 +154,11 @@ export const useEmailVerification = ({
         return { success: false, message: "인증 확인에 실패했습니다." };
       }
     },
-    [onVerifyCode, verificationState.isCodeSent, verificationState.timeRemaining]
+    [
+      onVerifyCode,
+      verificationState.isCodeSent,
+      verificationState.timeRemaining,
+    ]
   );
 
   // 상태 초기화

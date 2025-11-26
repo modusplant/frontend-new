@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { NicknameVerificationState } from "@/lib/types";
+import { NicknameVerificationState } from "@/lib/types/auth";
 
 export interface UseNicknameVerificationProps {
   /** 닉네임 중복 확인 API 함수 (실제 구현 시 사용) */
