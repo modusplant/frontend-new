@@ -8,6 +8,7 @@ import { Heart, MessageSquare, Trash2 } from "lucide-react";
 import { useCommentLike } from "@/lib/hooks/comment/useCommentLike";
 import { useCommentMutations } from "@/lib/hooks/comment/useCommentMutations";
 import CommentInput from "./commentInput";
+import Profile from "@/components/_common/profile";
 
 interface CommentItemProps {
   comment: Comment;
@@ -47,86 +48,87 @@ export default function CommentItem({
   };
 
   return (
-    <div className={`${indentClass} border-l-2 border-transparent pl-4`}>
+    <>
       {comment.isDeleted ? (
         // 삭제된 댓글
         <div className="text-neutral-60 py-4 text-sm">삭제된 댓글입니다</div>
       ) : (
-        <div className="rounded-lg bg-neutral-100 p-4">
-          {/* 작성자 정보 */}
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-neutral-20 font-medium">
-              {comment.nickname}
-            </span>
+        <div className="mt-6 flex items-start gap-4">
+          <Profile />
 
-            {isMyComment && (
+          <div className="w-full">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-neutral-20 font-medium">
+                {comment.nickname}
+              </span>
+
+              {isMyComment && (
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="text-neutral-60 hover:text-system-alert flex items-center gap-1 text-sm transition-colors disabled:opacity-50"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  삭제
+                </button>
+              )}
+            </div>
+
+            {/* 댓글 내용 */}
+            <p className="text-neutral-20 mb-2 text-sm leading-relaxed whitespace-pre-wrap">
+              {comment.content}
+            </p>
+
+            {/* 액션 버튼 */}
+            <div className="text-neutral-60 flex items-center gap-4 text-sm">
+              <span>{formatRelativeTime(comment.createdAt)}</span>
               <button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="text-neutral-60 hover:text-system-alert flex items-center gap-1 text-sm transition-colors disabled:opacity-50"
+                onClick={handleLike}
+                disabled={isLiking}
+                className={`flex items-center gap-1.5 transition-colors disabled:opacity-50 ${
+                  isLiked
+                    ? "text-primary-50"
+                    : "text-neutral-60 hover:text-primary-50"
+                }`}
               >
-                <Trash2 className="h-4 w-4" />
-                삭제
+                <Heart
+                  className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`}
+                  strokeWidth={2}
+                />
               </button>
+              <span>{likeCount}</span>
+
+              <button
+                onClick={() => setShowReplyForm(!showReplyForm)}
+                className="text-neutral-60 hover:text-primary-50 flex items-center gap-1.5 transition-colors"
+              >
+                <MessageSquare className="h-4 w-4" />
+                답글 쓰기
+              </button>
+            </div>
+
+            {/* 답글 작성 입력창 */}
+            {showReplyForm && (
+              <div className="mt-4">
+                <CommentInput
+                  postId={postId}
+                  parentPath={comment.path}
+                  siblingCount={comment.children?.length || 0}
+                  onSuccess={() => {
+                    setShowReplyForm(false);
+                    onUpdate();
+                  }}
+                  onCancel={() => setShowReplyForm(false)}
+                />
+              </div>
             )}
           </div>
-
-          {/* 댓글 내용 */}
-          <p className="text-neutral-20 mb-3 text-sm leading-relaxed whitespace-pre-wrap">
-            {comment.content}
-          </p>
-
-          {/* 액션 버튼 */}
-          <div className="flex items-center gap-4 text-sm">
-            <span className="text-neutral-60 text-sm">
-              {formatRelativeTime(comment.createdAt)}
-            </span>
-            <button
-              onClick={handleLike}
-              disabled={isLiking}
-              className={`flex items-center gap-1.5 transition-colors disabled:opacity-50 ${
-                isLiked
-                  ? "text-primary-50"
-                  : "text-neutral-60 hover:text-primary-50"
-              }`}
-            >
-              <Heart
-                className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`}
-                strokeWidth={2}
-              />
-              <span>{likeCount}</span>
-            </button>
-
-            <button
-              onClick={() => setShowReplyForm(!showReplyForm)}
-              className="text-neutral-60 hover:text-primary-50 flex items-center gap-1.5 transition-colors"
-            >
-              <MessageSquare className="h-4 w-4" />
-              답글 쓰기
-            </button>
-          </div>
-
-          {/* 답글 작성 입력창 */}
-          {showReplyForm && (
-            <div className="mt-4">
-              <CommentInput
-                postId={postId}
-                parentPath={comment.path}
-                siblingCount={comment.children?.length || 0}
-                onSuccess={() => {
-                  setShowReplyForm(false);
-                  onUpdate();
-                }}
-                onCancel={() => setShowReplyForm(false)}
-              />
-            </div>
-          )}
         </div>
       )}
 
       {/* 답글 렌더링 (재귀) */}
       {comment.children && comment.children.length > 0 && (
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 ml-14 space-y-4">
           {comment.children.map((childComment) => (
             <CommentItem
               key={childComment.path}
@@ -137,6 +139,6 @@ export default function CommentItem({
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }
