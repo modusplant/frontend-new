@@ -12,13 +12,16 @@ interface PostContentProps {
 export default function PostContent({ content }: PostContentProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // order 순서대로 정렬
-  const sortedContent = [...content].sort((a, b) => a.order - b.order);
+  // 텍스트와 이미지를 분리하여 순서대로 렌더링
+  const textContent = content.filter((item) => item.type === "text");
+  const imageContent = content.filter((item) => item.type === "image");
+
+  const postContent = [...textContent, ...imageContent];
 
   return (
     <>
       <div className="prose prose-lg max-w-none">
-        {sortedContent.map((item, index) => {
+        {postContent.map((item, index) => {
           if (item.type === "text") {
             return (
               <p
