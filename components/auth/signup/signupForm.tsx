@@ -11,10 +11,10 @@ import { TERMS_VERSIONS } from "@/lib/constants/terms";
 import { Button } from "@/components/_common/button";
 
 // Sub-components
-import EmailSection from "./signup/emailSection";
-import PasswordSection from "./signup/passwordSection";
-import NicknameSection from "./signup/nicknameSection";
-import TermsSection from "./signup/termsSection";
+import EmailSection from "./emailSection";
+import PasswordSection from "./passwordSection";
+import NicknameSection from "./nicknameSection";
+import TermsSection from "./termsSection";
 
 export default function SignupForm() {
   const router = useRouter();
