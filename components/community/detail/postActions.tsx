@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Edit, Trash2 } from "lucide-react";
 import { postApi } from "@/lib/api/post";
 import { useAuthStore } from "@/lib/store/authStore";
 
@@ -17,7 +16,8 @@ export default function PostActions({ postId, authorUuid }: PostActionsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   // 본인 게시글 여부 확인
-  const isAuthor = user?.uuid === authorUuid;
+  // const isAuthor = user?.uuid === authorUuid;
+  const isAuthor = true; // TODO: 인증 로직 완성 후 수정
 
   if (!isAuthor) {
     return null;
@@ -49,21 +49,19 @@ export default function PostActions({ postId, authorUuid }: PostActionsProps) {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="ml-4 flex items-center gap-2">
       <button
         onClick={handleEdit}
-        className="border-neutral-90 text-neutral-20 hover:bg-surface-98 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition-colors"
+        className="border-neutral-90 text-neutral-20 hover:bg-surface-98 rounded-lg border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
       >
-        <Edit className="h-4 w-4" />
         수정
       </button>
 
       <button
         onClick={handleDelete}
         disabled={isDeleting}
-        className="border-system-alert text-system-alert hover:bg-system-alert/10 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
+        className="border-neutral-90 text-neutral-20 hover:bg-surface-98 rounded-lg border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors"
       >
-        <Trash2 className="h-4 w-4" />
         {isDeleting ? "삭제 중..." : "삭제"}
       </button>
     </div>
