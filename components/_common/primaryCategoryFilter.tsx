@@ -1,54 +1,44 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
+import { PRIMARY_CATEGORIES, type Category } from "@/lib/constants/categories";
+import { useDropdownState } from "@/lib/hooks/category/useDropdownState";
 
 export interface PrimaryCategoryFilterProps {
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
+  selectedCategoryId: string;
+  onCategoryChange: (categoryId: string) => void;
+  variant?: "filter" | "selector";
+  showAll?: boolean;
   className?: string;
 }
 
 /**
- * 1차 카테고리 필터 (커스텀 드롭다운)
- * - 전체/일상/Q&A/팁
- * - 단일 선택
- * - 2차 필터와 연동
+ * 1차 카테고리 필터/셀렉터 (커스텀 드롭다운)
+ * - variant="filter": 메인페이지 필터 (둥근 pill, "전체" 포함)
+ * - variant="selector": 게시글 작성 셀렉터 (일반 rounded, "전체" 제외)
  */
 export default function PrimaryCategoryFilter({
-  selectedCategory,
+  selectedCategoryId,
   onCategoryChange,
+  variant = "filter",
+  showAll = true,
   className,
 }: PrimaryCategoryFilterProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const categories = ["전체", "일상", "Q&A", "팁"];
+  const { isOpen, dropdownRef, toggle, close } = useDropdownState();
 
-  // 외부 클릭 감지
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
+  const categories: Category[] = showAll
+    ? [{ id: "all", name: "전체" }, ...PRIMARY_CATEGORIES]
+    : PRIMARY_CATEGORIES;
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
-
-  const handleSelect = (category: string) => {
-    onCategoryChange(category);
-    setIsOpen(false);
+  const handleSelect = (category: Category) => {
+    onCategoryChange(category.id);
+    close();
   };
+
+  const isSelector = variant === "selector";
+  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+  const displayText = selectedCategory?.name ?? "주제를 선택해주세요(필수)";
 
   return (
     <div
@@ -58,22 +48,38 @@ export default function PrimaryCategoryFilter({
       {/* 드롭다운 버튼 */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggle}
         className={cn(
-          "border-surface-stroke text-neutral-0 flex w-40 items-center justify-between rounded-full border bg-neutral-100 px-4 py-3 text-sm font-medium",
+          "border-surface-stroke flex items-center justify-between border bg-neutral-100",
           "hover:border-primary-50 focus:border-primary-50 focus:ring-primary-10 focus:ring-2 focus:outline-none",
           "cursor-pointer",
-          isOpen && "border-primary-50 ring-primary-10 ring-2"
+          isOpen && "border-primary-50 ring-primary-10 ring-2",
+          {
+            // filter 스타일 (메인페이지)
+            "text-neutral-0 w-40 rounded-full px-4 py-3 text-sm font-medium":
+              !isSelector,
+            // selector 스타일 (게시글 작성)
+            "h-11 w-60 rounded-lg px-4.5 py-2.5": isSelector,
+          }
         )}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span>{selectedCategory}</span>
+        <span
+          className={cn({
+            "text-[15px] leading-normal font-medium tracking-[-0.01em]":
+              isSelector,
+            "text-neutral-20": isSelector && selectedCategory,
+            "text-neutral-60": isSelector && !selectedCategory,
+          })}
+        >
+          {displayText}
+        </span>
         <ChevronDown
-          className={cn(
-            "text-neutral-60 ml-2 h-4 w-4 transition-transform md:h-5 md:w-5",
-            isOpen && "rotate-180"
-          )}
+          className={cn("transition-transform", isOpen && "rotate-180", {
+            "text-neutral-60 ml-2 h-4 w-4 md:h-5 md:w-5": !isSelector,
+            "text-neutral-70 h-3.5 w-3.5": isSelector,
+          })}
         />
       </button>
 
@@ -81,23 +87,35 @@ export default function PrimaryCategoryFilter({
       {isOpen && (
         <div
           className={cn(
-            "border-surface-stroke absolute z-50 mt-2 rounded-lg border bg-neutral-100 p-1.5 shadow-lg"
+            "border-surface-stroke absolute z-50 mt-2 border bg-neutral-100 shadow-lg",
+            {
+              "rounded-lg p-1.5": !isSelector,
+              "top-12 left-0 w-60 rounded-lg": isSelector,
+            }
           )}
           role="listbox"
         >
           {categories.map((category) => (
             <button
-              key={category}
+              key={category.id}
               onClick={() => handleSelect(category)}
               className={cn(
-                "text-neutral-0 hover:bg-surface-98 w-full rounded-lg px-5 py-2.5 text-left text-sm font-medium transition-colors md:px-4 md:py-3",
-                selectedCategory === category &&
-                  "bg-primary-90 text-primary-50 font-semibold"
+                "hover:bg-surface-98 w-full text-left transition-colors",
+                {
+                  // filter 스타일
+                  "text-neutral-0 rounded-lg px-5 py-2.5 text-sm font-medium md:px-4 md:py-3":
+                    !isSelector,
+                  "bg-primary-90 text-primary-50 font-semibold":
+                    !isSelector && selectedCategoryId === category.id,
+                  // selector 스타일
+                  "text-neutral-20 px-4 py-2.5 text-[15px] leading-normal font-medium tracking-[-0.01em]":
+                    isSelector,
+                }
               )}
               role="option"
-              aria-selected={selectedCategory === category}
+              aria-selected={selectedCategoryId === category.id}
             >
-              {category}
+              {category.name}
             </button>
           ))}
         </div>
