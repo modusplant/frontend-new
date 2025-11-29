@@ -24,7 +24,7 @@ export default function PostActions({ postId, authorUuid }: PostActionsProps) {
   }
 
   const handleEdit = () => {
-    router.push(`/community/edit/${postId}`);
+    router.push(`/community/write/edit/${postId}`);
   };
 
   const handleDelete = async () => {
