@@ -83,12 +83,12 @@ export default function PostWritePage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-[848px] flex-col gap-5 px-10 py-5">
+    <div className="mx-auto flex min-h-screen w-[848px] flex-col gap-5 bg-neutral-100 px-10 py-5">
       {/* 헤더 */}
       <PostWriteHeader isEditMode={hookIsEditMode} />
 
       {/* 메인 폼 */}
-      <div className="flex flex-1 flex-col gap-4 self-stretch">
+      <div className="flex flex-col gap-4 self-stretch">
         {/* 카테고리 선택 */}
         <CategorySelector
           primaryCategoryId={primaryCategoryId}
