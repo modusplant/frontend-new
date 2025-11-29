@@ -91,7 +91,7 @@ export default function PostWritePage() {
       <PostWriteHeader isEditMode={hookIsEditMode} />
 
       {/* 메인 폼 */}
-      <div className="flex flex-1 flex-col items-end gap-4 self-stretch">
+      <div className="flex flex-1 flex-col gap-4 self-stretch">
         {/* 카테고리 선택 */}
         <CategorySelector
           primaryCategory={primaryCategory}

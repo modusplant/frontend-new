@@ -13,11 +13,11 @@ export default function PostWriteHeader({ isEditMode }: PostWriteHeaderProps) {
   const { user } = useAuthStore();
 
   return (
-    <div className="flex items-start gap-5">
+    <div>
       {/* 뒤로가기 버튼 */}
       <button
         onClick={() => router.back()}
-        className="border-neutral-90 hover:bg-surface-98 mt-1.5 rounded-full border p-2 transition-colors"
+        className="border-neutral-90 hover:bg-surface-98 mb-4 rounded-full border p-2 transition-colors"
         aria-label="뒤로가기"
       >
         <ArrowLeft className="h-4 w-4 text-neutral-50" />
