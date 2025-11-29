@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/_common/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 
 export type BlurOverlayVariant = "post" | "comment";
 

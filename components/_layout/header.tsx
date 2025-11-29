@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/_common/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { useAuthStore } from "@/lib/store/authStore";
 import { usePathname } from "next/navigation";
 import Profile from "@/components/_common/profile";

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { Pause, ChevronLeft, ChevronRight, Play, Square } from "lucide-react";
 
 export interface HeroBannerProps {

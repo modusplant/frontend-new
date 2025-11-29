@@ -6,7 +6,7 @@ import { PostData } from "@/lib/types/post";
 import Badge from "@/components/_common/badge";
 import { secondaryCategoryLabels } from "@/lib/constants/categories";
 import { getThumbnail, getExcerpt, formatPostDate } from "@/lib/utils/post";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { Bookmark, Heart, MessageSquare } from "lucide-react";
 
 export interface PostCardProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { ChevronDown } from "lucide-react";
 import { PRIMARY_CATEGORIES, type Category } from "@/lib/constants/categories";
 import { useDropdownState } from "@/lib/hooks/category/useDropdownState";

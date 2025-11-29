@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import Image from "next/image";
 
 export interface FooterProps {

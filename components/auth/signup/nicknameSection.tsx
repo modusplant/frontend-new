@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { useNicknameVerification } from "@/lib/hooks/auth/useNicknameVerification";
 import { authApi } from "@/lib/api/auth";
 import { Input } from "@/components/_common/input";

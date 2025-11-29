@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { useEmailVerification } from "@/lib/hooks/auth/useEmailVerification";
 import { authApi } from "@/lib/api/auth";
 import { Input } from "@/components/_common/input";
