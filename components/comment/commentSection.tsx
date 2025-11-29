@@ -6,6 +6,7 @@ import CommentList from "./commentList";
 import CommentInput from "./commentInput";
 import { dummyComments } from "@/lib/data/postDetail";
 import BlurOverlay from "../_layout/blurOverlay";
+import { useAuthStore } from "@/lib/store/authStore";
 
 interface CommentSectionProps {
   postId: string;
@@ -22,6 +23,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
   // 댓글 트리 구조 생성
   const { commentTree, totalCount } = useCommentTree({ comments });
+
+  // 인증 상태
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <div className="border-surface-stroke mt-16 border-t pt-12">
@@ -53,7 +57,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
             onUpdate={refetch}
           />
         )}
-        <BlurOverlay variant="comment" />
+        {!isAuthenticated && <BlurOverlay variant="comment" />}
       </div>
     </div>
   );
