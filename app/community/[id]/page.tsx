@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PostDetail from "@/components/community/postDetail";
+import PostDetail from "@/components/community/detail/postDetail";
 import { postApi } from "@/lib/api/post";
 import { dummyPostDetail } from "@/lib/data/postDetail";
 

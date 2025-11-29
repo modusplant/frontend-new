@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { PostDetail as PostDetailType } from "@/lib/types/post";
 import PostContent from "./postContent";
 import PostActions from "./postActions";
-import CommentSection from "../comment/commentSection";
+import CommentSection from "../../comment/commentSection";
 import { formatRelativeTime } from "@/lib/utils/formatTime";
 import {
   primaryCategoryLabels,
