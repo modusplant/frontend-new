@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Nanum_Myeongjo } from "next/font/google";
 import localFont from "next/font/local";
+import AuthInitializer from "@/components/_layout/authInitializer";
+import ConditionalLayout from "@/components/_layout/conditionalLayout";
+import QueryProvider from "@/components/_layout/queryProvider";
 import "./globals.css";
 
 // Emphasis 폰트: Nanum Myeongjo (제목, 강조)
@@ -64,7 +67,10 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} ${nanumMyeongjo.variable} antialiased`}
       >
-        {children}
+        <QueryProvider>
+          <AuthInitializer />
+          <ConditionalLayout>{children}</ConditionalLayout>
+        </QueryProvider>
       </body>
     </html>
   );

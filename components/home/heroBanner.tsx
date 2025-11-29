@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 import { Pause, ChevronLeft, ChevronRight, Play, Square } from "lucide-react";
 
 export interface HeroBannerProps {
@@ -86,7 +86,7 @@ export default function HeroBanner({
         ))}
       </div>
 
-      <div className="absolute inset-x-0 top-1/2">
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 md:px-6 lg:px-8">
           <span className="font-emphasis text-2xl font-bold text-neutral-100 text-shadow-lg">
             ModusPlant

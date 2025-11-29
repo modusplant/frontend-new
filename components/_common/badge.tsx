@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindHelper";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /**
