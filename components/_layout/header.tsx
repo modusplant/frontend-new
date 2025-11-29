@@ -16,7 +16,9 @@ export default function Header({ className }: HeaderProps) {
   const { isAuthenticated, user, logout } = useAuthStore();
   const pathname = usePathname();
 
-  const logo = pathname.endsWith("/")
+  const isRootPath = pathname.endsWith("/");
+
+  const logo = isRootPath
     ? "/logo_favicon/Logo_white.svg"
     : "/logo_favicon/Logo_green.svg";
 
@@ -24,8 +26,15 @@ export default function Header({ className }: HeaderProps) {
     logout();
   };
   return (
-    <header className={cn("sticky top-0 z-50 w-full", className)}>
-      <div className="flex h-14 w-full items-center justify-between px-2 md:px-4 lg:px-6">
+    <header
+      className={cn(isRootPath ? "sticky top-0" : "", "z-50 w-full", className)}
+    >
+      <div
+        className={cn(
+          "flex h-14 w-full items-center justify-between px-2 md:px-4 lg:px-6",
+          !isRootPath && "border-b border-[#000000]/10"
+        )}
+      >
         {/* 로고 */}
         <Link href="/" className="transition-opacity hover:opacity-80">
           <Image src={logo} alt="모두의식물 로고" width={117} height={26} />
