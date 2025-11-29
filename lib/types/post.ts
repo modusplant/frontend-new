@@ -150,3 +150,14 @@ export interface PostDetail {
   isLiked: boolean; // 현재 사용자의 좋아요 여부
   isBookmarked: boolean; // 현재 사용자의 북마크 여부
 }
+
+/**
+ * 게시글 작성/수정 요청 타입
+ */
+export interface PostWritePayload {
+  primaryCategoryId: string; // UUID
+  secondaryCategoryId: string; // UUID
+  title: string; // 최대 60자
+  textContent: string; // 본문 텍스트
+  images: File[]; // 이미지 파일들 (최대 10개, 각 10MB)
+}

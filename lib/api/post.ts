@@ -4,6 +4,7 @@ import {
   GetPostsRequest,
   GetPostsResponseData,
   PostDetail,
+  PostWritePayload,
 } from "@/lib/types/post";
 
 /**
@@ -151,6 +152,121 @@ export const postApi = {
       `/api/v1/members/${memberId}/bookmark/communication/post/${postUlid}`,
       {
         method: "DELETE",
+        skipAuth: false,
+      }
+    );
+  },
+
+  /**
+   * 게시글 작성
+   * @param payload 게시글 작성 데이터
+   * @returns 성공 응답
+   */
+  async createPost(payload: PostWritePayload): Promise<ApiResponse<void>> {
+    const formData = new FormData();
+
+    // 1. 텍스트 콘텐츠를 파일로 변환하여 추가
+    if (payload.textContent.trim()) {
+      const textBlob = new Blob([payload.textContent], { type: "text/plain" });
+      const textFile = new File([textBlob], "text_0.txt", {
+        type: "text/plain",
+      });
+      formData.append("content", textFile);
+    }
+
+    // 2. 이미지 파일들 추가
+    payload.images.forEach((image, index) => {
+      formData.append("content", image);
+    });
+
+    // 3. orderInfo 생성 (텍스트 + 이미지 순서)
+    const orderInfo: { filename: string; order: number }[] = [];
+    let currentOrder = 1;
+
+    if (payload.textContent.trim()) {
+      orderInfo.push({ filename: "text_0.txt", order: currentOrder++ });
+    }
+
+    payload.images.forEach((image) => {
+      orderInfo.push({ filename: image.name, order: currentOrder++ });
+    });
+
+    const orderBlob = new Blob([JSON.stringify(orderInfo)], {
+      type: "application/json",
+    });
+    formData.append("orderInfo", orderBlob);
+
+    // 4. Query Parameters 생성
+    const params = new URLSearchParams({
+      primaryCategoryId: payload.primaryCategoryId,
+      secondaryCategoryId: payload.secondaryCategoryId,
+      title: payload.title,
+      isPublished: "true", // 항상 게시 (임시저장 제외)
+    });
+
+    return apiClient<void>(`/api/v1/communication/posts?${params}`, {
+      method: "POST",
+      body: formData,
+      skipAuth: false,
+    });
+  },
+
+  /**
+   * 게시글 수정
+   * @param postId 게시글 ID (ULID)
+   * @param payload 게시글 수정 데이터
+   * @returns 성공 응답
+   */
+  async updatePost(
+    postId: string,
+    payload: PostWritePayload
+  ): Promise<ApiResponse<void>> {
+    const formData = new FormData();
+
+    // 1. 텍스트 콘텐츠를 파일로 변환하여 추가
+    if (payload.textContent.trim()) {
+      const textBlob = new Blob([payload.textContent], { type: "text/plain" });
+      const textFile = new File([textBlob], "text_0.txt", {
+        type: "text/plain",
+      });
+      formData.append("content", textFile);
+    }
+
+    // 2. 이미지 파일들 추가
+    payload.images.forEach((image) => {
+      formData.append("content", image);
+    });
+
+    // 3. orderInfo 생성
+    const orderInfo: { filename: string; order: number }[] = [];
+    let currentOrder = 1;
+
+    if (payload.textContent.trim()) {
+      orderInfo.push({ filename: "text_0.txt", order: currentOrder++ });
+    }
+
+    payload.images.forEach((image) => {
+      orderInfo.push({ filename: image.name, order: currentOrder++ });
+    });
+
+    const orderBlob = new Blob([JSON.stringify(orderInfo)], {
+      type: "application/json",
+    });
+    formData.append("orderInfo", orderBlob);
+
+    // 4. Query Parameters 생성
+    const params = new URLSearchParams({
+      primaryCategoryId: payload.primaryCategoryId,
+      secondaryCategoryId: payload.secondaryCategoryId,
+      title: payload.title,
+      isPublished: "true",
+    });
+
+    return apiClient<void>(
+      `/api/v1/communication/posts/${postId}?${params}`,
+      {
+        method: "PUT",
+        body: formData,
         skipAuth: false,
       }
     );
