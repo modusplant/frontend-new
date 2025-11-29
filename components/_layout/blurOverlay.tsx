@@ -45,7 +45,7 @@ export default function BlurOverlay({
               ))}
             </p>
             <div className="flex items-center gap-2">
-              <Link href="/auth/login">
+              <Link href="/login">
                 <Button
                   variant="default"
                   size="lg"
@@ -54,7 +54,7 @@ export default function BlurOverlay({
                   로그인
                 </Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/signup">
                 <Button
                   variant="point"
                   size="lg"
